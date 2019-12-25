@@ -71,8 +71,8 @@ class LinkDetail(Resource):
 @api.route('/get_tweets')
 class GetJson(Resource):
     def get(self):
-        # return jsonify(prepdata())
-        return jsonify(get_quote())
+        return jsonify(prepdata())
+        #return jsonify(get_quote())
 
 @api.route('/dummy_tweets')
 class GetDummy(Resource):
