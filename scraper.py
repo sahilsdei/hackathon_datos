@@ -45,6 +45,6 @@ def get_quote():
         quote = {}
         quote['text'] = row.attrs['alt']
         quote['img'] = row.attrs['src']
-
+        quote['text'] = re.sub(r"[^#]*$", "", quote['text']).replace('#', '')
         quotes.append(quote)
     return quotes

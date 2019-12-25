@@ -33,7 +33,7 @@ def prepdata():
         hashtags=[]
         for a in raw_hashtabs[1].split('+'):
            c = a.split('*')[1].replace(' ', '').replace('"', '')
-           hashtags.append(c)
+           hashtags.append('#'+c)
 
         _dict['tech'].append({
             "title":link['text'],
