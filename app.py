@@ -1,10 +1,10 @@
-import os
+import os,json
 from flask import Flask, Response, render_template, make_response, request, jsonify
 from flask_restplus import Api, Resource,reqparse
 from scraper import get_links, get_detail,get_quote
 from hashtag_topic_modeling import get_hashtag,get_summary
 # Port variable to run the server on from environment variables
-PORT = os.environ.get('PORT') or  5000
+PORT = os.environ.get('PORT') or  8001
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Smart Tweet',
           description='Twitter API',
@@ -27,7 +27,7 @@ def prepdata():
         "tech": [],
         "quotes": []
     }
-    for link in get_links()[:10]:
+    for link in get_links()[:5]:
         detail_txt = get_detail(link=link['link'])
         raw_hashtabs = get_hashtag(detail_txt)[0]
         hashtags=[]
@@ -73,7 +73,15 @@ class GetJson(Resource):
     def get(self):
         # return jsonify(prepdata())
         return jsonify(get_quote())
+
+@api.route('/dummy_tweets')
+class GetDummy(Resource):
+    def get(self):
+        with open('dumy.json') as f:
+            data = json.load(f)
+            return jsonify(data)
+
+
 if __name__ == "__main__":
     #app.config['DEBUG'] = os.environ.get('ENV') == 'development'
     app.run(host='0.0.0.0', port=int(PORT))
-
