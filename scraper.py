@@ -2,14 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-r1 = requests.get("https://artificialintelligence-news.com/")
-coverpage = r1.content
-
-soup1 = BeautifulSoup(coverpage, 'html5lib')
-
-coverpage_news = soup1.find_all('li',attrs={'class':'infinite-post'})
-
 def get_links():
+    request1 = requests.get("https://artificialintelligence-news.com/")
+    coverpage = request1.content
+
+    soup = BeautifulSoup(coverpage, 'html5lib')
+
+    coverpage_news = soup.find_all('li', attrs={'class': 'infinite-post'})
     links = list()
     for li in coverpage_news:
         text=li.find('h2').string
@@ -20,10 +19,10 @@ def get_links():
 
 
 def get_detail(link):
-    r2= requests.get(link)
-    soup2 = BeautifulSoup(r2.content, 'html5lib')
+    raw_link= requests.get(link)
+    souped_link = BeautifulSoup(raw_link.content, 'html5lib')
 
-    content_main= soup2.find('div',attrs={'id':'content-main'})
+    content_main= souped_link.find('div',attrs={'id':'content-main'})
 
     all_text=[]
     for row in content_main.find_all('p'):
@@ -33,13 +32,13 @@ def get_detail(link):
 
 def get_quote():
     URL = "http://www.values.com/inspirational-quotes"
-    r = requests.get(URL)
+    raw_quote = requests.get(URL)
 
-    soup = BeautifulSoup(r.content, 'html5lib')
+    souped_quote = BeautifulSoup(raw_quote.content, 'html5lib')
 
-    quotes = []  # a list to store quotes
+    quotes = []
 
-    table = soup.find('div', attrs={'id': 'all_quotes'})
+    table = souped_quote.find('div', attrs={'id': 'all_quotes'})
 
     for row in table.findAll('img'):
         quote = {}
